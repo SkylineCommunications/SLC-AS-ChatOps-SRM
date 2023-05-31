@@ -1,0 +1,67 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33516.290
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Internal", "Internal", "{605996AF-EF93-451C-81F4-80EC41F016F4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{BD102EF9-072D-4100-ACA0-49F40EF73886}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dlls", "Dlls", "{53540241-2503-4C54-B0F7-EE5DC1316D9A}"
+	ProjectSection(SolutionItems) = preProject
+		Dlls\AboutThisFolder.md = Dlls\AboutThisFolder.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CompanionFiles", "CompanionFiles", "{BEC48B95-FBFD-4107-8CF5-5BDBBF146CAF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Skyline DataMiner", "Skyline DataMiner", "{8C1F7870-0B48-404F-9BFF-C81DFB0544B4}"
+	ProjectSection(SolutionItems) = preProject
+		CompanionFiles\Skyline DataMiner\AboutThisFolder.md = CompanionFiles\Skyline DataMiner\AboutThisFolder.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{F485A206-E24A-4EC3-BDF2-643ADC96FBE5}"
+	ProjectSection(SolutionItems) = preProject
+		Documentation\AboutThisFolder.md = Documentation\AboutThisFolder.md
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Code Analysis", "Code Analysis", "{C8D1E1A8-CA5B-4C7C-A966-103040028BC9}"
+	ProjectSection(SolutionItems) = preProject
+		Internal\Code Analysis\qaction-debug.ruleset = Internal\Code Analysis\qaction-debug.ruleset
+		Internal\Code Analysis\qaction-release.ruleset = Internal\Code Analysis\qaction-release.ruleset
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Booking Info", "Booking Info", "{813AB95D-61BC-4F01-86C5-25DC08EE1085}"
+	ProjectSection(SolutionItems) = preProject
+		Booking Info.xml = Booking Info.xml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Actions", "Actions", "{F5965FC7-2A7E-4371-B3CB-A1079B59FFFE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Booking Info_1", "Booking Info_1\Booking Info_1.csproj", "{C045EE64-A606-49E5-8270-E8F6183478DD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C045EE64-A606-49E5-8270-E8F6183478DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C045EE64-A606-49E5-8270-E8F6183478DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C045EE64-A606-49E5-8270-E8F6183478DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C045EE64-A606-49E5-8270-E8F6183478DD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{8C1F7870-0B48-404F-9BFF-C81DFB0544B4} = {BEC48B95-FBFD-4107-8CF5-5BDBBF146CAF}
+		{C8D1E1A8-CA5B-4C7C-A966-103040028BC9} = {605996AF-EF93-451C-81F4-80EC41F016F4}
+		{813AB95D-61BC-4F01-86C5-25DC08EE1085} = {BD102EF9-072D-4100-ACA0-49F40EF73886}
+		{F5965FC7-2A7E-4371-B3CB-A1079B59FFFE} = {813AB95D-61BC-4F01-86C5-25DC08EE1085}
+		{C045EE64-A606-49E5-8270-E8F6183478DD} = {F5965FC7-2A7E-4371-B3CB-A1079B59FFFE}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {07BEF66B-4BEF-40DC-8C79-797CD8E3FD60}
+	EndGlobalSection
+EndGlobal
