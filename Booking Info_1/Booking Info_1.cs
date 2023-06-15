@@ -54,9 +54,15 @@ namespace Booking_Info_1
 	using System;
 	using System.Collections.Generic;
 	using System.Globalization;
+	using System.Linq;
 	using System.Text;
+	using AdaptiveCards;
+	using Newtonsoft.Json;
 	using Skyline.DataMiner.Automation;
-	
+	using Skyline.DataMiner.Net.Messages;
+	using Skyline.DataMiner.Net.Messages.SLDataGateway;
+	using Skyline.DataMiner.Net.ResourceManager.Objects;
+
 	/// <summary>
 	/// Represents a DataMiner Automation script.
 	/// </summary>
@@ -68,7 +74,25 @@ namespace Booking_Info_1
 		/// <param name="engine">Link with SLAutomation process.</param>
 		public void Run(IEngine engine)
 		{
-	
+			try
+			{
+				var resourceManagerHelper = new ResourceManagerHelper();
+				resourceManagerHelper.RequestResponseEvent += (o, e) => engine.SendSLNetSingleResponseMessage(e.requestMessage);
+
+				var ongoingReservations = resourceManagerHelper.GetReservationInstances(ReservationInstanceExposers.Status.Equal((int)ReservationStatus.Ongoing));
+
+				var card = new List<AdaptiveElement>
+				{
+					new AdaptiveTextBlock($"There are currently {ongoingReservations.Count()} ongoing bookings: \n{string.Join("\n", ongoingReservations.Select(r => r.Name))}") { Wrap = true },
+				};
+
+				engine.AddScriptOutput("AdaptiveCard", JsonConvert.SerializeObject(card));
+			}
+			catch(Exception ex)
+			{
+				engine.Log(ex.ToString());
+				engine.ExitFail(ex.Message);
+			}
 		}
 	}
 }
