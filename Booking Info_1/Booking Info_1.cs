@@ -1,4 +1,4 @@
-/*
+﻿/*
 ****************************************************************************
 *  Copyright (c) 2023,  Skyline Communications NV  All Rights Reserved.    *
 ****************************************************************************
@@ -68,6 +68,7 @@ namespace Booking_Info_1
 	/// </summary>
 	public class Script
 	{
+		private ServiceManagerHelper serviceManager;
 		/// <summary>
 		/// The script entry point.
 		/// </summary>
@@ -77,22 +78,143 @@ namespace Booking_Info_1
 			try
 			{
 				var resourceManagerHelper = new ResourceManagerHelper();
-				resourceManagerHelper.RequestResponseEvent += (o, e) => engine.SendSLNetSingleResponseMessage(e.requestMessage);
+				resourceManagerHelper.RequestResponseEvent += (o, e) => e.responseMessage = Engine.SLNet.SendSingleResponseMessage(e.requestMessage);
 
-				var ongoingReservations = resourceManagerHelper.GetReservationInstances(ReservationInstanceExposers.Status.Equal((int)ReservationStatus.Ongoing));
+				serviceManager = new ServiceManagerHelper();
+				serviceManager.RequestResponseEvent += (o, e) => e.responseMessage = Engine.SLNet.SendSingleResponseMessage(e.requestMessage);
 
-				var card = new List<AdaptiveElement>
-				{
-					new AdaptiveTextBlock($"There are currently {ongoingReservations.Count()} ongoing bookings: \n{string.Join("\n", ongoingReservations.Select(r => r.Name))}") { Wrap = true },
-				};
+				var ongoingReservations = resourceManagerHelper.GetReservationInstances(ReservationInstanceExposers.Status.Equal((int)ReservationStatus.Ongoing)).ToList();
+
+				var card = GetAdaptiveCard(ongoingReservations);
 
 				engine.AddScriptOutput("AdaptiveCard", JsonConvert.SerializeObject(card));
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				engine.Log(ex.ToString());
 				engine.ExitFail(ex.Message);
 			}
+		}
+
+		private List<AdaptiveElement> GetAdaptiveCard(List<ReservationInstance> reservations, int maxAmountToShow = 10)
+		{
+			var container = new AdaptiveContainer
+			{
+				Spacing = AdaptiveSpacing.Medium,
+			};
+
+			container.Items.Add(new AdaptiveTextBlock
+			{
+				Text = $"There are {reservations.Count} ongoing bookings.",
+			});
+
+			if (reservations.Count > maxAmountToShow)
+			{
+				container.Items.Add(new AdaptiveTextBlock
+				{
+					Text = $"Below are the {maxAmountToShow} bookings whose end is nearest:",
+				});
+			}
+
+			var reservationNameColumnItems = new List<AdaptiveElement>
+			{
+				new AdaptiveTextBlock
+				{
+					Text = "Booking Name",
+					Style = AdaptiveTextBlockStyle.Heading,
+					Weight = AdaptiveTextWeight.Bolder,
+				},
+			};
+
+			var reservationStartColumnItems = new List<AdaptiveElement>
+			{
+				new AdaptiveTextBlock
+				{
+					Text = "Booking Start",
+					Style = AdaptiveTextBlockStyle.Heading,
+					Weight = AdaptiveTextWeight.Bolder,
+				},
+			};
+
+			var reservationEndColumnItems = new List<AdaptiveElement>
+			{
+				new AdaptiveTextBlock
+				{
+					Text = "Booking End",
+					Style = AdaptiveTextBlockStyle.Heading,
+					Weight = AdaptiveTextWeight.Bolder,
+				},
+			};
+
+			var reservationDefinitionColumnItems = new List<AdaptiveElement>
+			{
+				new AdaptiveTextBlock
+				{
+					Text = "Service Definition",
+					Style = AdaptiveTextBlockStyle.Heading,
+					Weight = AdaptiveTextWeight.Bolder,
+				},
+			};
+
+			bool first = true;
+			foreach (var reservation in reservations.OrderBy(r => r.End).Take(maxAmountToShow))
+			{
+				reservationNameColumnItems.Add(new AdaptiveTextBlock
+				{
+					Text = reservation.Name,
+					Separator = first,
+					Wrap = true,
+				});
+
+				reservationStartColumnItems.Add(new AdaptiveTextBlock
+				{
+					Text = reservation.Start.ToString(),
+					Separator = first,
+					Wrap = true,
+				});
+
+				reservationEndColumnItems.Add(new AdaptiveTextBlock
+				{
+					Text = reservation.End.ToString(),
+					Separator = first,
+					Wrap = true,
+				});
+
+				reservationDefinitionColumnItems.Add(new AdaptiveTextBlock
+				{
+					Text = reservation is ServiceReservationInstance serviceReservation ? serviceManager.GetServiceDefinition(serviceReservation.ServiceDefinitionID)?.Name ?? "N/A" : "N/A",
+					Separator = first,
+					Wrap = true,
+				});
+
+				first = false;
+			}
+
+			container.Items.Add(new AdaptiveColumnSet
+			{
+				new AdaptiveColumn
+				{
+					Width = "auto",
+					Items = reservationNameColumnItems,
+				},
+				new AdaptiveColumn
+				{
+					Width = "auto",
+					Items = reservationStartColumnItems,
+				},
+				new AdaptiveColumn
+				{
+					Width = "auto",
+					Items = reservationEndColumnItems,
+				},
+				new AdaptiveColumn
+				{
+					Width = "auto",
+					Items = reservationDefinitionColumnItems,
+				},
+			});
+
+			return new List<AdaptiveElement>(container);
 		}
 	}
 }
