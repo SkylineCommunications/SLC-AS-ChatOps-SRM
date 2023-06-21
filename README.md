@@ -4,7 +4,7 @@ This repository contains an automation script solution with scripts that can be 
 
 The following scrips are currently available:
 
-[Booking Info] (#booking-info)
+[Booking Info](#booking-info)
 
 ## Pre-requisites
 
