@@ -4,7 +4,8 @@ This repository contains an automation script solution with scripts that can be 
 
 The following scrips are currently available:
 
-[Booking Info](#booking-info)
+- [Booking Info](#booking-info)
+- [Show Resource Utilization](#show-resource-utilization)
 
 ## Pre-requisites
 
@@ -15,3 +16,9 @@ Kindly ensure that your DataMiner system and your Microsoft Teams adhere to the 
 Automation script that returns the ongoing bookings from the connected DataMiner system. More specifically the return value will contain the total amount of ongoing bookings including a table which will show by default the ongoing bookings whose end is nearest (default filter maximum 10 bookings).
 
 ![Booking Info example](/Documentation/OngoingBookingsChatOpsCommand.png)
+
+## Show Resource Utilization
+
+Automation script that returns the utilization (%) of each resource in the specified resource pool for the last week.
+
+![Resource Utilization](/Documentation/ResourceUtilization.png)
