@@ -69,8 +69,8 @@ namespace Show_Resource_Utilization_1
 	public class Script
 	{
 		private static int durationInDays = 7;
-		DateTime start;
-		DateTime end;
+		private DateTime start;
+		private DateTime end;
 
 		/// <summary>
 		/// The Script entry point.
@@ -132,8 +132,7 @@ namespace Show_Resource_Utilization_1
 		{
 			var resourceFilter = new ORFilterElement<ReservationInstance>(resourceIds.Select(id => ReservationInstanceExposers.ResourceIDsInReservationInstance.Contains(id)).ToArray());
 
-			var now = DateTime.UtcNow;
-			var timeRangeUtc = new TimeRangeUtc(now.AddDays(-7), now);
+			var timeRangeUtc = new TimeRangeUtc(start, end);
 
 			var filter = resourceFilter
 				.AND(ReservationInstanceExposers.Start.LessThanOrEqual(timeRangeUtc.Stop)
@@ -203,7 +202,7 @@ namespace Show_Resource_Utilization_1
 				},
 			};
 
-			Double maxDuration = 24 * 60 * 7;
+			Double maxDuration = 24 * 60 * durationInDays;
 
 			foreach (var resourceInfo in resources)
 			{
